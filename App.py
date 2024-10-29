@@ -13,21 +13,28 @@ nltk.download('punkt')
 st.set_page_config(page_title='Briefly: The world in a nutshell', page_icon="📰")
 st.markdown("""
     <style>
-    body {
-        font-family: 'Arial', sans-serif;  /* Change to your preferred font */
-        font-size: 16px;  /* Default font size */
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;700&display=swap');
+
+    html, body {
+        font-family: 'Roboto', sans-serif;
+        font-size: 16px;
+        background-color: #f4f4f4;
     }
     h1 {
         font-size: 24px;  /* Title font size */
+        font-family: 'Merriweather', serif;
     }
     h2, h3, h4 {
         font-size: 20px;  /* Subtitle font size */
+        font-family: 'Merriweather', serif;
     }
     h5, h6 {
         font-size: 18px;  /* Section header font size */
+        font-family: 'Merriweather', serif;
     }
     p {
         font-size: 20px;  /* Paragraph font size */
+        font-family: 'Merriweather', serif;
     }
     .st-emotion-cache-1r6slb0{
         box-shadow:3px 3px 2px 0px rgba(255,255,255,.65);
@@ -73,6 +80,9 @@ st.markdown("""
         width: calc(25%);
         flex: 1 1 calc(33.3333% - 1.5rem);
     }
+    .st-emotion-cache-z22cl0{
+        border:none;
+            }
     </style>
 """, unsafe_allow_html=True)
 def fetch_news_search_topic(topic):
