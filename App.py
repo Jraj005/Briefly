@@ -36,7 +36,7 @@ st.markdown("""
         font-size: 20px !important;  /* Paragraph font size */
         font-family: 'Merriweather', serif !important;
     }
-    .st-emotion-cache-1r6slb0{
+    .css-1r6slb0{
         box-shadow:3px 3px 2px 0px rgba(255,255,255,.65) !important;
         padding: 15px 20px !important;
             color:white !important;
@@ -45,42 +45,42 @@ st.markdown("""
             # background-color:#0D0E1F !important;
             background-color:#252829 !important;
     }
-    .st-emotion-cache-1r6slb0:hover{
+    .css-1r6slb0:hover{
         transform:scale(1.07) !important;
         z-index:2 !important;
     }
-    .st-emotion-cache-144ybaj{
+    .css-144ybaj{
             background-color: white !important;
             color:black !important;
             border-radius:12px !important;
             font-size:18px !important;
             }
-            .st-emotion-cache-19lmkc0{
+            .css-19lmkc0{
             text-align:center !important;}
-    .st-emotion-cache-1kyxreq{
+    .css-1kyxreq{
             justify-content:center !important;
             }
-    .st-emotion-cache-1y4p8pa{
+    .css-1y4p8pa{
         max-width:75rem !important;
         margin:0px 10px !important;
     }
-    .st-emotion-cache-ocqkz7{
+    .css-ocqkz7{
             gap:1.2 rem !important;
     }
     .css-1v0mbdj{
             width:14rem !important;
     }
-    .st-emotion-cache-10trblm{
+    .css-10trblm{
         text-align:center !important;
     }
     #newsslice-news-made-simple{
         font-size:40px !important;
     }
-    .st-emotion-cache-1r6slb0{
+    .css-1r6slb0{
         width: calc(25%) !important;
         flex: 1 1 calc(33.3333% - 1.5rem) !important;
     }
-    .st-emotion-cache-z22cl0{
+    .css-z22cl0{
         border:none !important;
             }
     </style>
