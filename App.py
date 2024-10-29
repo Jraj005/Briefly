@@ -67,7 +67,7 @@ st.markdown("""
     .st-emotion-cache-ocqkz7{
             gap:1.2 rem !important;
     }
-    .st-emotion-cache-1v0mbdj{
+    .css-1v0mbdj{
             width:14rem !important;
     }
     .st-emotion-cache-10trblm{
