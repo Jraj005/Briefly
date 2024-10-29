@@ -1,0 +1,9 @@
+Pillow
+urllib3
+streamlit
+beautifulsoup4
+lxml[html_clean]  # Include html_clean extra
+protobuf==3.20.0
+jinja2>=3.0
+requests
+git+https://github.com/codelucas/newspaper.git  # Use the forked version of newspaper
