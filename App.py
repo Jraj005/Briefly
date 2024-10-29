@@ -62,7 +62,7 @@ st.markdown("""
             justify-content:center !important;
             }
     .css-1y4p8pa{
-        max-width:75rem !important;
+        max-width:60rem !important;
         margin:0px 10px !important;
     }
     .css-ocqkz7{
