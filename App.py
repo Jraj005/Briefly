@@ -13,75 +13,75 @@ nltk.download('punkt')
 st.set_page_config(page_title='Briefly: The world in a nutshell', page_icon="📰")
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;700&display=swap') !important;
 
     html, body {
-        font-family: 'Roboto', sans-serif;
-        font-size: 16px;
-        background-color: #f4f4f4;
+        font-family: 'Roboto', sans-serif !important;
+        font-size: 16px !important;
+        background-color: #f4f4f4 !important;
     }
     h1 {
-        font-size: 24px;  /* Title font size */
-        font-family: 'Merriweather', serif;
+        font-size: 24px !important;  /* Title font size */
+        font-family: 'Merriweather', serif !important;
     }
     h2, h3, h4 {
-        font-size: 20px;  /* Subtitle font size */
-        font-family: 'Merriweather', serif;
+        font-size: 20px !important;  /* Subtitle font size */
+        font-family: 'Merriweather', serif !important;
     }
     h5, h6 {
-        font-size: 18px;  /* Section header font size */
-        font-family: 'Merriweather', serif;
+        font-size: 18px !important;  /* Section header font size */
+        font-family: 'Merriweather', serif !important;
     }
     p {
-        font-size: 20px;  /* Paragraph font size */
-        font-family: 'Merriweather', serif;
+        font-size: 20px !important;  /* Paragraph font size */
+        font-family: 'Merriweather', serif !important;
     }
     .st-emotion-cache-1r6slb0{
-        box-shadow:3px 3px 2px 0px rgba(255,255,255,.65);
-        padding: 15px 20px;
-            color:white;
-        border-radius:15px;
-        margin:10px 2px;
-            # background-color:#0D0E1F;
-            background-color:#252829;
+        box-shadow:3px 3px 2px 0px rgba(255,255,255,.65) !important;
+        padding: 15px 20px !important;
+            color:white !important;
+        border-radius:15px !important;
+        margin:10px 2px !important;
+            # background-color:#0D0E1F !important;
+            background-color:#252829 !important;
     }
     .st-emotion-cache-1r6slb0:hover{
-        transform:scale(1.07);
-        z-index:2;
+        transform:scale(1.07) !important;
+        z-index:2 !important;
     }
     .st-emotion-cache-144ybaj{
-            background-color: white;
-            color:black;
-            border-radius:12px;
-            font-size:18px;
+            background-color: white !important;
+            color:black !important;
+            border-radius:12px !important;
+            font-size:18px !important;
             }
             .st-emotion-cache-19lmkc0{
-            text-align:center;}
+            text-align:center !important;}
     .st-emotion-cache-1kyxreq{
-            justify-content:center;
+            justify-content:center !important;
             }
     .st-emotion-cache-1y4p8pa{
-        max-width:75rem;
-        margin:0px 10px;
+        max-width:75rem !important;
+        margin:0px 10px !important;
     }
     .st-emotion-cache-ocqkz7{
-            gap:1.2 rem;
+            gap:1.2 rem !important;
     }
     .st-emotion-cache-1v0mbdj{
-            width:14rem;
+            width:14rem !important;
     }
     .st-emotion-cache-10trblm{
-        text-align:center;
+        text-align:center !important;
     }
     #newsslice-news-made-simple{
-        font-size:40px;
+        font-size:40px !important;
     }
     .st-emotion-cache-1r6slb0{
-        width: calc(25%);
-        flex: 1 1 calc(33.3333% - 1.5rem);
+        width: calc(25%) !important;
+        flex: 1 1 calc(33.3333% - 1.5rem) !important;
     }
     .st-emotion-cache-z22cl0{
-        border:none;
+        border:none !important;
             }
     </style>
 """, unsafe_allow_html=True)
