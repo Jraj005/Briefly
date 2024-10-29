@@ -19,6 +19,7 @@ st.markdown("""
         font-family: 'Roboto', sans-serif !important;
         font-size: 16px !important;
         background-color: #f4f4f4 !important;
+        width:70% !important;
     }
     h1 {
         font-size: 24px !important;  /* Title font size */
