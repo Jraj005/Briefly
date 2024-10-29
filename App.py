@@ -81,9 +81,17 @@ st.markdown("""
         width: calc(25%) !important;
         flex: 1 1 calc(33.3333% - 1.5rem) !important;
     }
-    .css-z22cl0{
+    .css-1epmw04{
         border:none !important;
             }
+    .st-bh{
+    border:none;
+    }
+    .st-cd{
+    background-color:white;
+    color:black;
+    border-radius:20px;
+    }
     </style>
 """, unsafe_allow_html=True)
 def fetch_news_search_topic(topic):
