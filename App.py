@@ -87,7 +87,7 @@ st.markdown("""
     .st-bh{
     border:none;
     }
-    .st-cd{
+    .st-do{
     background-color:white;
     color:black;
     border-radius:20px;
