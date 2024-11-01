@@ -96,7 +96,7 @@ def run():
     st.title("BRIEFLY: THE WORLD IN A NUTSHELL")
     
     # Add logo image
-    logo_url = "https://drive.google.com/uc?id=YOUR_LOGO_FILE_ID"  # Replace with your logo file ID
+    logo_url = "https://drive.google.com/uc?id=1iip_eP5Lz9G3QsKrjF3T7ngP4d7-Hwrq"
     logo_response = requests.get(logo_url)
     logo_image = Image.open(BytesIO(logo_response.content))
     st.image(logo_image, use_column_width=False)
@@ -138,7 +138,6 @@ def run():
                 st.error("No News found for {}".format(user_topic))
         else:
             st.warning("Please write Topic Name to Search🔍")
-
 
 
 run()
