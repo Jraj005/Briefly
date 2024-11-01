@@ -115,7 +115,7 @@ def fetch_news_search_topic(topic):
 
 def fetch_top_news():
     try:
-        site = 'https://news.google.com/news/rss?hl=en&gl=IN'
+        site = 'https://news.google.com/news/rss?hl=hi&gl=IN'
         op = urlopen(site)
         rd = op.read()
         op.close()
