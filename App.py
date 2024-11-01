@@ -87,6 +87,12 @@ st.markdown("""
     .st-bh{
     border:none;
     }
+    .st-dv{
+    color:black;
+    }
+    .st-da{
+    border:none;
+    }
     .st-do{
     background-color:white;
     color:black;
