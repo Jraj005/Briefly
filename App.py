@@ -100,9 +100,9 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-def fetch_news_search_topic(topic):
+def fetch_news_search_topic(topic, lang):
     try:
-        site = 'https://news.google.com/rss/search?q={}'.format(topic)
+        site = f'https://news.google.com/rss/search?q={topic}&hl={lang}'
         op = urlopen(site)
         rd = op.read()
         op.close()
@@ -113,9 +113,9 @@ def fetch_news_search_topic(topic):
         st.error(f"Error fetching news: {e}")
         return []
 
-def fetch_top_news():
+def fetch_top_news(lang):
     try:
-        site = 'https://news.google.com/news/rss?hl=hi&gl=IN'
+        site = f'https://news.google.com/news/rss?hl={lang}&gl=IN'
         op = urlopen(site)
         rd = op.read()
         op.close()
@@ -126,9 +126,9 @@ def fetch_top_news():
         st.error(f"Error fetching top news: {e}")
         return []
 
-def fetch_category_news(topic):
+def fetch_category_news(topic, lang):
     try:
-        site = 'https://news.google.com/news/rss/headlines/section/topic/{}'.format(topic)
+        site = f'https://news.google.com/news/rss/headlines/section/topic/{topic}?hl={lang}'
         op = urlopen(site)
         rd = op.read()
         op.close()
@@ -179,15 +179,26 @@ def display_news(list_of_news, news_quantity):
 def run():
     st.title("BRIEFLY: THE WORLD IN A NUTSHELL")
     
-    # Logo URL
-    logo_url = "https://drive.google.com/uc?id=1iip_eP5Lz9G3QsKrjF3T7ngP4d7-Hwrq"
+    # Updated Logo URL
+    logo_url = "https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX"
     logo_response = requests.get(logo_url)
     logo_image = Image.open(BytesIO(logo_response.content))
     st.image(logo_image, use_column_width=False)
 
     # Language Selection
-    lang_options = ['English', 'हिंदी']  # You can add more languages if needed
-    selected_lang = st.selectbox("Select Language", lang_options)
+    lang_options = {
+        'English': 'en',
+        'हिंदी': 'hi',
+        'বাংলা': 'bn',
+        'ગુજરાતી': 'gu',
+        'ಕನ್ನಡ': 'kn',
+        'മലയാളം': 'ml',
+        'मराठी': 'mr',
+        'தமிழ்': 'ta',
+        'తెలుగు': 'te',
+        'उर्दू': 'ur'
+    }
+    selected_lang = st.selectbox("Select Language", list(lang_options.keys()))
 
     category = ['Trending🔥 News', 'Favourite💙 Topics', 'Search🔍 Topic']
     cat_op = st.selectbox('Select your Category', category)
@@ -195,7 +206,7 @@ def run():
     if cat_op == category[0]:
         st.subheader("✅ Here is the Trending🔥 news for you")
         no_of_news = 21
-        news_list = fetch_top_news()
+        news_list = fetch_top_news(lang_options[selected_lang])
         display_news(news_list, no_of_news)
     elif cat_op == category[1]:
         av_topics = ['Choose Topic', 'WORLD', 'NATION', 'BUSINESS', 'TECHNOLOGY', 'ENTERTAINMENT', 'SPORTS', 'SCIENCE', 'HEALTH']
@@ -205,7 +216,7 @@ def run():
             st.warning("Please Choose the Topic")
         else:
             no_of_news = 21
-            news_list = fetch_category_news(chosen_topic)
+            news_list = fetch_category_news(chosen_topic, lang_options[selected_lang])
             if news_list:
                 st.subheader("✅ Here are some {} News for you".format(chosen_topic))
                 display_news(news_list, no_of_news)
@@ -218,7 +229,7 @@ def run():
 
         if st.button("Search") and user_topic != '':
             user_topic_pr = user_topic.replace(' ', '')
-            news_list = fetch_news_search_topic(topic=user_topic_pr)
+            news_list = fetch_news_search_topic(topic=user_topic_pr, lang=lang_options[selected_lang])
             if news_list:
                 st.subheader("✅ Here are some News related to {} for you".format(user_topic.capitalize()))
                 display_news(news_list, no_of_news)
