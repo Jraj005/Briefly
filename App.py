@@ -14,22 +14,95 @@ st.set_page_config(page_title='Briefly: The world in a nutshell', page_icon="�
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;700&display=swap') !important;
-    /* Add your custom styling here */
+
+    html, body {
+        font-family: 'Roboto', sans-serif !important;
+        font-size: 16px !important;
+        background-color: #f4f4f4 !important;
+        width:70% !important;
+    }
+    h1 {
+        font-size: 24px !important;  /* Title font size */
+        font-family: 'Merriweather', serif !important;
+    }
+    h2, h3, h4 {
+        font-size: 20px !important;  /* Subtitle font size */
+        font-family: 'Merriweather', serif !important;
+    }
+    h5, h6 {
+        font-size: 18px !important;  /* Section header font size */
+        font-family: 'Merriweather', serif !important;
+    }
+    p {
+        font-size: 20px !important;  /* Paragraph font size */
+        font-family: 'Merriweather', serif !important;
+    }
+    .css-1r6slb0{
+        box-shadow:3px 3px 2px 0px rgba(255,255,255,.65) !important;
+        padding: 15px 20px !important;
+            color:white !important;
+        border-radius:15px !important;
+        margin:10px 2px !important;
+            background-color:#252829 !important;
+    }
+    .css-1r6slb0:hover{
+        transform:scale(1.07) !important;
+        z-index:2 !important;
+    }
+    .css-144ybaj{
+            background-color: white !important;
+            color:black !important;
+            border-radius:12px !important;
+            font-size:18px !important;
+            }
+    .css-19lmkc0{
+            text-align:center !important;}
+    .css-1kyxreq{
+            justify-content:center !important;
+            }
+    .css-1y4p8pa{
+        max-width:60rem !important;
+        margin:0px 10px !important;
+    }
+    .css-ocqkz7{
+            gap:1.2 rem !important;
+    }
+    .css-1v0mbdj{
+        width:14rem !important;
+    }
+    .css-10trblm{
+        text-align:center !important;
+    }
+    #newsslice-news-made-simple{
+        font-size:40px !important;
+    }
+    .css-1r6slb0{
+        width: calc(25%) !important;
+        flex: 1 1 calc(33.3333% - 1.5rem) !important;
+    }
+    .css-1epmw04{
+        border:none !important;
+    }
+    .st-bh{
+        border:none;
+    }
+    .st-dv{
+        color:black;
+    }
+    .st-da{
+        border:none;
+    }
+    .st-do{
+        background-color:white;
+        color:black;
+        border-radius:20px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Dictionary of Indian languages and their Google News language codes
-languages = {
-    'Assamese': 'as', 'Bengali': 'bn', 'Gujarati': 'gu', 'Hindi': 'hi', 'Kannada': 'kn',
-    'Malayalam': 'ml', 'Marathi': 'mr', 'Odia': 'or', 'Punjabi': 'pa', 'Tamil': 'ta',
-    'Telugu': 'te', 'Urdu': 'ur', 'English': 'en', 'Konkani': 'kok', 'Maithili': 'mai',
-    'Nepali': 'ne', 'Bodo': 'brx', 'Dogri': 'doi', 'Kashmiri': 'ks', 'Manipuri': 'mni',
-    'Santali': 'sat', 'Sindhi': 'sd'
-}
-
-def fetch_news_search_topic(topic, lang_code):
+def fetch_news_search_topic(topic):
     try:
-        site = f'https://news.google.com/rss/search?q={topic}&hl={lang_code}&gl=IN'
+        site = 'https://news.google.com/rss/search?q={}'.format(topic)
         op = urlopen(site)
         rd = op.read()
         op.close()
@@ -40,9 +113,9 @@ def fetch_news_search_topic(topic, lang_code):
         st.error(f"Error fetching news: {e}")
         return []
 
-def fetch_top_news(lang_code):
+def fetch_top_news():
     try:
-        site = f'https://news.google.com/news/rss?hl={lang_code}&gl=IN'
+        site = 'https://news.google.com/news/rss?hl=hi&gl=IN'
         op = urlopen(site)
         rd = op.read()
         op.close()
@@ -53,9 +126,9 @@ def fetch_top_news(lang_code):
         st.error(f"Error fetching top news: {e}")
         return []
 
-def fetch_category_news(topic, lang_code):
+def fetch_category_news(topic):
     try:
-        site = f'https://news.google.com/news/rss/headlines/section/topic/{topic}?hl={lang_code}&gl=IN'
+        site = 'https://news.google.com/news/rss/headlines/section/topic/{}'.format(topic)
         op = urlopen(site)
         rd = op.read()
         op.close()
@@ -66,14 +139,24 @@ def fetch_category_news(topic, lang_code):
         st.error(f"Error fetching category news: {e}")
         return []
 
-# Function to display news articles
+def fetch_news_poster(poster_link):
+    try:
+        u = urlopen(poster_link)
+        raw_data = u.read()
+        image = Image.open(io.BytesIO(raw_data))
+        return image
+    except Exception:
+        return Image.open('./Meta/no_image.jpg')
+
 def display_news(list_of_news, news_quantity):
-    cols = st.columns(3)
+    cols = st.columns(3)  # Create three columns for desktop view
     c = 0
+
     for news in list_of_news:
-        if c % 3 == 0 and c != 0:
+        if c % 3 == 0 and c != 0:  # For every third news item, create new columns
             cols = st.columns(3)
-        with cols[c % 3]:
+
+        with cols[c % 3]:  # Display news in the respective column
             st.markdown(f'**{news.title.text}**')
             news_data = Article(news.link.text)
             try:
@@ -82,24 +165,29 @@ def display_news(list_of_news, news_quantity):
                 news_data.nlp()
             except Exception as e:
                 st.error(f"Error processing article: {e}")
-                continue
+                continue  # Skip to the next article if there’s an error
+
             with st.expander("Read More"):
                 st.markdown(f"<h6 style='text-align: justify;'>{news_data.summary}</h6>", unsafe_allow_html=True)
                 st.markdown(f"[Read more at {news.source.text}]({news.link.text})")
                 st.success("Published Date: " + news.pubDate.text)
+
         c += 1
         if c >= news_quantity:
             break
 
-# Main app function
 def run():
     st.title("BRIEFLY: THE WORLD IN A NUTSHELL")
     
-    # Add logo image
+    # Logo URL
     logo_url = "https://drive.google.com/uc?id=1iip_eP5Lz9G3QsKrjF3T7ngP4d7-Hwrq"
     logo_response = requests.get(logo_url)
     logo_image = Image.open(BytesIO(logo_response.content))
     st.image(logo_image, use_column_width=False)
+
+    # Language Selection
+    lang_options = ['English', 'हिंदी']  # You can add more languages if needed
+    selected_lang = st.selectbox("Select Language", lang_options)
 
     category = ['Trending🔥 News', 'Favourite💙 Topics', 'Search🔍 Topic']
     cat_op = st.selectbox('Select your Category', category)
@@ -138,6 +226,5 @@ def run():
                 st.error("No News found for {}".format(user_topic))
         else:
             st.warning("Please write Topic Name to Search🔍")
-
 
 run()
