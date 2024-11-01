@@ -94,16 +94,12 @@ def display_news(list_of_news, news_quantity):
 # Main app function
 def run():
     st.title("BRIEFLY: THE WORLD IN A NUTSHELL")
-    # shared_link = "https://drive.google.com/file/d/1K1fzEgjXHO2gOMUAPvJ6HEvHyvKaLFFC/view?usp=sharing"
-    shared_link = "https://drive.google.com/file/d/1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX/view?usp=sharing"
-    file_id = shared_link.split('/d/')[1].split('/')[0]
-    download_url = f"https://drive.google.com/uc?id={file_id}"
-
-    response = requests.get(download_url)
-    response.raise_for_status()  # Check for request errors
-
-    image = Image.open(BytesIO(response.content))
-    st.image(image, use_column_width=False)
+    
+    # Add logo image
+    logo_url = "https://drive.google.com/uc?id=YOUR_LOGO_FILE_ID"  # Replace with your logo file ID
+    logo_response = requests.get(logo_url)
+    logo_image = Image.open(BytesIO(logo_response.content))
+    st.image(logo_image, use_column_width=False)
 
     category = ['Trending🔥 News', 'Favourite💙 Topics', 'Search🔍 Topic']
     cat_op = st.selectbox('Select your Category', category)
@@ -111,7 +107,7 @@ def run():
     if cat_op == category[0]:
         st.subheader("✅ Here is the Trending🔥 news for you")
         no_of_news = 21
-        news_list = fetch_top_news(lang_code)
+        news_list = fetch_top_news()
         display_news(news_list, no_of_news)
     elif cat_op == category[1]:
         av_topics = ['Choose Topic', 'WORLD', 'NATION', 'BUSINESS', 'TECHNOLOGY', 'ENTERTAINMENT', 'SPORTS', 'SCIENCE', 'HEALTH']
@@ -121,25 +117,28 @@ def run():
             st.warning("Please Choose the Topic")
         else:
             no_of_news = 21
-            news_list = fetch_category_news(chosen_topic, lang_code)
+            news_list = fetch_category_news(chosen_topic)
             if news_list:
-                st.subheader(f"✅ Here are some {chosen_topic} News for you")
+                st.subheader("✅ Here are some {} News for you".format(chosen_topic))
                 display_news(news_list, no_of_news)
             else:
-                st.error(f"No News found for {chosen_topic}")
+                st.error("No News found for {}".format(chosen_topic))
 
     elif cat_op == category[2]:
         user_topic = st.text_input("Enter your Topic🔍")
         no_of_news = 21
-        if st.button("Search") and user_topic:
+
+        if st.button("Search") and user_topic != '':
             user_topic_pr = user_topic.replace(' ', '')
-            news_list = fetch_news_search_topic(user_topic_pr, lang_code)
+            news_list = fetch_news_search_topic(topic=user_topic_pr)
             if news_list:
-                st.subheader(f"✅ Here are some News related to {user_topic.capitalize()} for you")
+                st.subheader("✅ Here are some News related to {} for you".format(user_topic.capitalize()))
                 display_news(news_list, no_of_news)
             else:
-                st.error(f"No News found for {user_topic}")
+                st.error("No News found for {}".format(user_topic))
         else:
             st.warning("Please write Topic Name to Search🔍")
+
+
 
 run()
