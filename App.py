@@ -94,8 +94,16 @@ def display_news(list_of_news, news_quantity):
 # Main app function
 def run():
     st.title("BRIEFLY: THE WORLD IN A NUTSHELL")
-    selected_language = st.selectbox("Select Language", options=list(languages.keys()))
-    lang_code = languages[selected_language]
+    # shared_link = "https://drive.google.com/file/d/1K1fzEgjXHO2gOMUAPvJ6HEvHyvKaLFFC/view?usp=sharing"
+    shared_link = "https://drive.google.com/file/d/1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX/view?usp=sharing"
+    file_id = shared_link.split('/d/')[1].split('/')[0]
+    download_url = f"https://drive.google.com/uc?id={file_id}"
+
+    response = requests.get(download_url)
+    response.raise_for_status()  # Check for request errors
+
+    image = Image.open(BytesIO(response.content))
+    st.image(image, use_column_width=False)
 
     category = ['Trending🔥 News', 'Favourite💙 Topics', 'Search🔍 Topic']
     cat_op = st.selectbox('Select your Category', category)
