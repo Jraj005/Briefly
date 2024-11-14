@@ -76,6 +76,13 @@ st.markdown("""
     #newsslice-news-made-simple{
         font-size:40px !important;
     }
+    .css-4brx5n{
+        display: flex;
+        justify-content:center;
+    }
+    img{
+        height: 40vh;
+    }
     .css-1r6slb0{
         width: calc(25%) !important;
         flex: 1 1 calc(33.3333% - 1.5rem) !important;
