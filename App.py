@@ -78,7 +78,7 @@ st.markdown("""
     }
     .css-4brx5n{
         display: flex;
-        justify-content:center;
+        justify-content: center;
     }
     img{
         height: 40vh;
