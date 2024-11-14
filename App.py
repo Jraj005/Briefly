@@ -76,7 +76,7 @@ st.markdown("""
     #newsslice-news-made-simple{
         font-size:40px !important;
     }
-    .css-4brx5n{
+    .st-4brx5n{
         display: flex;
         justify-content: center;
     }
