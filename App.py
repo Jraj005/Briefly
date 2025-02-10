@@ -185,19 +185,14 @@ def display_news(list_of_news, news_quantity):
 
 def run():
 
-    st.markdown(
-        "<h1 style='text-align: center;'>BRIEFLY: THE WORLD IN A NUTSHELL</h1>",
-        unsafe_allow_html=True
-    )
-    
+    st.title("BRIEFLY: THE WORLD IN A NUTSHELL")
+
+    # Updated Logo URL
     logo_url = "https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX"
     logo_response = requests.get(logo_url)
     logo_image = Image.open(BytesIO(logo_response.content))
-    
-    st.markdown(
-        f"<div style='text-align: center;'><img src='{logo_url}' style='width: 250px;'></div>",
-        unsafe_allow_html=True
-    )
+    st.image(logo_image, use_container_width=False)
+
 
 
     # Language Selection
