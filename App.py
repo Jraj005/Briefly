@@ -190,7 +190,7 @@ def run():
     logo_url = "https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX"
     logo_response = requests.get(logo_url)
     logo_image = Image.open(BytesIO(logo_response.content))
-    st.image(logo_image, use_column_width=False)
+    st.image(logo_image, use_container_width=False)
 
     # Language Selection
     lang_options = {
