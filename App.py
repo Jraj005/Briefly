@@ -163,28 +163,28 @@ def display_news(list_of_news, news_quantity):
         if c % 3 == 0 and c != 0:  # For every third news item, create new columns
             cols = st.columns(3)
 
-with cols[c % 3]:  # Ensure indentation is correct
-    card_container = st.container()  # This must be indented properly
-
-    with card_container:
-        st.markdown(f"<b>{news.title.text}</b>", unsafe_allow_html=True)
-
-        news_data = Article(news.link.text)
-        try:
-            news_data.download()
-            news_data.parse()
-            news_data.nlp()
-        except Exception as e:
-            st.error(f"Error processing article: {e}")
-            continue
-
-        # Push expander to bottom
-        st.markdown("<div style='flex-grow: 1;'></div>", unsafe_allow_html=True)  
-
-        with st.expander("Read More"):
-            st.markdown(f"<p style='text-align: justify;'>{news_data.summary}</p>", unsafe_allow_html=True)
-            st.markdown(f"[Read more at {news.source.text}]({news.link.text})")
-            st.success("Published Date: " + news.pubDate.text)
+        with cols[c % 3]:  # Ensure indentation is correct
+            card_container = st.container()  # This must be indented properly
+        
+            with card_container:
+                st.markdown(f"<b>{news.title.text}</b>", unsafe_allow_html=True)
+        
+                news_data = Article(news.link.text)
+                try:
+                    news_data.download()
+                    news_data.parse()
+                    news_data.nlp()
+                except Exception as e:
+                    st.error(f"Error processing article: {e}")
+                    continue
+        
+                # Push expander to bottom
+                st.markdown("<div style='flex-grow: 1;'></div>", unsafe_allow_html=True)  
+        
+                with st.expander("Read More"):
+                    st.markdown(f"<p style='text-align: justify;'>{news_data.summary}</p>", unsafe_allow_html=True)
+                    st.markdown(f"[Read more at {news.source.text}]({news.link.text})")
+                    st.success("Published Date: " + news.pubDate.text)
 
 
 
