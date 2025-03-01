@@ -163,31 +163,21 @@ def display_news(list_of_news, news_quantity):
         if c % 3 == 0 and c != 0:  # For every third news item, create new columns
             cols = st.columns(3)
 
-        with cols[c % 3]:  # Ensure indentation is correct
-            card_container = st.container()  # This must be indented properly
-        
-            with card_container:
-                st.markdown(f"<b>{news.title.text}</b>", unsafe_allow_html=True)
-        
-                news_data = Article(news.link.text)
-                try:
-                    news_data.download()
-                    news_data.parse()
-                    news_data.nlp()
-                except Exception as e:
-                    st.error(f"Error processing article: {e}")
-                    continue
-        
-                # Push expander to bottom
-                st.markdown("<div style='flex-grow: 1;'></div>", unsafe_allow_html=True)  
-        
-                with st.expander("Read More"):
-                    st.markdown(f"<p style='text-align: justify;'>{news_data.summary}</p>", unsafe_allow_html=True)
-                    st.markdown(f"[Read more at {news.source.text}]({news.link.text})")
-                    st.success("Published Date: " + news.pubDate.text)
+        with cols[c % 3]:  # Display news in the respective column
+            st.markdown(f'**{news.title.text}**')
+            news_data = Article(news.link.text)
+            try:
+                news_data.download()
+                news_data.parse()
+                news_data.nlp()
+            except Exception as e:
+                st.error(f"Error processing article: {e}")
+                continue  # Skip to the next article if there’s an error
 
-
-
+            with st.expander("Read More"):
+                st.markdown(f"<h6 style='text-align: justify;'>{news_data.summary}</h6>", unsafe_allow_html=True)
+                st.markdown(f"[Read more at {news.source.text}]({news.link.text})")
+                st.success("Published Date: " + news.pubDate.text)
 
         c += 1
         if c >= news_quantity:
@@ -201,12 +191,10 @@ def run():
     logo_url = "https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX"
     logo_response = requests.get(logo_url)
     logo_image = Image.open(BytesIO(logo_response.content))
-    st.markdown(
-    "<div style='text-align: center;'>"
-    "<img src='https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX' width='200'>"
-    "</div>", 
-    unsafe_allow_html=True
-)
+    st.image(logo_image, use_container_width=False)
+
+
+
     # Language Selection
     lang_options = {
         'English': 'en',
