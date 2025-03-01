@@ -163,22 +163,28 @@ def display_news(list_of_news, news_quantity):
         if c % 3 == 0 and c != 0:  # For every third news item, create new columns
             cols = st.columns(3)
 
-        with cols[c % 3]:  
-    st.markdown(
-        f"<div style='display: flex; flex-direction: column; height: 100%; justify-content: space-between;'>"
-        f"<b>{news.title.text}</b>"
-        f"<div style='flex-grow: 1;'></div>"  # Pushes expander to bottom
-        f"<div>{news_data.summary}</div>"
-        f"<div style='margin-top: auto;'>"
-        f"<details><summary>Read More</summary>"
-        f"<p style='text-align: justify;'>{news_data.summary}</p>"
-        f"<a href='{news.link.text}'>Read more at {news.source.text}</a>"
-        f"<br><b>Published Date:</b> {news.pubDate.text}"
-        f"</details>"
-        f"</div>"
-        f"</div>",
-        unsafe_allow_html=True
-    )
+    with cols[c % 3]:  # Distribute cards evenly across columns
+    card_container = st.container()
+    
+    with card_container:
+        st.markdown(f"<b>{news.title.text}</b>", unsafe_allow_html=True)
+
+        news_data = Article(news.link.text)
+        try:
+            news_data.download()
+            news_data.parse()
+            news_data.nlp()
+        except Exception as e:
+            st.error(f"Error processing article: {e}")
+            continue
+
+        st.markdown("<div style='flex-grow: 1;'></div>", unsafe_allow_html=True)  # Pushes expander to bottom
+
+        with st.expander("Read More"):
+            st.markdown(f"<p style='text-align: justify;'>{news_data.summary}</p>", unsafe_allow_html=True)
+            st.markdown(f"[Read more at {news.source.text}]({news.link.text})")
+            st.success("Published Date: " + news.pubDate.text)
+
 
 
         c += 1
@@ -193,8 +199,12 @@ def run():
     logo_url = "https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX"
     logo_response = requests.get(logo_url)
     logo_image = Image.open(BytesIO(logo_response.content))
-    st.markdown("<div style='text-align: center;'><img src='https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX' width='200'></div>", unsafe_allow_html=True)
-
+    st.markdown(
+    "<div style='text-align: center;'>"
+    "<img src='https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX' width='200'>"
+    "</div>", 
+    unsafe_allow_html=True
+)
     # Language Selection
     lang_options = {
         'English': 'en',
