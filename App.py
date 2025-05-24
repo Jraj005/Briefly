@@ -1,4 +1,4 @@
-import streamlit as st
+fimport streamlit as st
 from PIL import Image
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
@@ -177,7 +177,7 @@ def run():
     logo_url = "https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX"
     logo_response = requests.get(logo_url)
     logo_image = Image.open(BytesIO(logo_response.content))
-    st.image(logo_image, use_container_width=False)
+    st.image(logo_image, width=300)
 
     # Language Selection
     lang_options = {
