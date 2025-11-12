@@ -101,7 +101,6 @@ st.markdown("""
         color: white;
         border: none;
         border-radius: 10px;
-        padding: 8px 18px;
         font-size: 16px;
         transition: all 0.2s ease;
     }
@@ -211,7 +210,7 @@ def display_news(news_list, limit=18):
 # --- Main Application ---
 def run():
     st.markdown("""
-        <h1 style='display:flex; flex-direction:column; font-size: 8em; align-items:center; gap:0.5rem;'>
+        <h1 style='display:flex; flex-direction:column; font-size: 6em; align-items:center; gap:0.5rem;'>
             <i class='lucide-earth'></i> Briefly<span><h5> The World in a Nutshell</h5></span>
         </h1>
     """, unsafe_allow_html=True)
