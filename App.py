@@ -1,112 +1,142 @@
 import streamlit as st
-from PIL import Image
 from bs4 import BeautifulSoup as soup
 from urllib.request import urlopen
 from newspaper import Article
-import io
 import nltk
-import requests
-from io import BytesIO
 
-# Download necessary NLTK resources
+# Download NLTK resource
 nltk.download('punkt')
-st.set_page_config(page_title='Briefly: The world in a nutshell', page_icon="📰")
+
+# --- Page Config ---
+st.set_page_config(
+    page_title="Briefly: The World in a Nutshell",
+    page_icon="📰",
+    layout="wide"
+)
+
+# --- Custom CSS ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@400;700&display=swap') !important;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Merriweather:wght@400;700&display=swap');
+    @import url('https://unpkg.com/lucide-static@latest/font/lucide.css');
 
-    html, body {
-        font-family: 'Roboto', sans-serif !important;
-        font-size: 16px !important;
-        background-color: #f4f4f4 !important;
-        width:70% !important;
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif !important;
+        background-color: #0E1117 !important;
+        color: #FFFFFF !important;
     }
-    h1 {
-        font-size: 24px !important;  /* Title font size */
+
+    h1, h2, h3 {
         font-family: 'Merriweather', serif !important;
+        font-weight: 700 !important;
+        color: #FFFFFF !important;
     }
-    h2, h3, h4 {
-        font-size: 20px !important;  /* Subtitle font size */
-        font-family: 'Merriweather', serif !important;
-    }
-    h5, h6 {
-        font-size: 18px !important;  /* Section header font size */
-        font-family: 'Merriweather', serif !important;
-    }
-    p {
-        font-size: 20px !important;  /* Paragraph font size */
-        font-family: 'Merriweather', serif !important;
-    }
-    .css-1r6slb0{
-        box-shadow:3px 3px 2px 0px rgba(255,255,255,.65) !important;
-        padding: 15px 20px !important;
-            color:white !important;
-        border-radius:15px !important;
-        margin:10px 2px !important;
-            background-color:#252829 !important;
-    }
-    .css-1r6slb0:hover{
-        transform:scale(1.07) !important;
-        z-index:2 !important;
-    }
-    .css-144ybaj{
-            background-color: white !important;
-            color:black !important;
-            border-radius:12px !important;
-            font-size:18px !important;
-            }
-    .css-19lmkc0{
-            text-align:center !important;}
-    .css-1kyxreq{
-            justify-content:center !important;
-            }
-    .css-1y4p8pa{
-        max-width:60rem !important;
-        margin:0px 10px !important;
-    }
-    .css-ocqkz7{
-            gap:1.2 rem !important;
-    }
-    .css-1v0mbdj{
-        width:14rem !important;
-    }
-    .css-10trblm{
-        text-align:center !important;
-    }
-    #newsslice-news-made-simple{
-        font-size:40px !important;
-    }
-    .st-4brx5n{
+
+    /* News card */
+    .news-card {
+        background: #4e5769;
+        border-radius: 14px;
+        padding: 1.8em 2em;
+        margin: 1em 0;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: -9px 6px 8px 3px rgb(0 0 0 / 63%);
+        cursor: pointer;
+        text-decoration: none !important;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 200px;
+        max-height: 200px;
+        overflow: hidden;
     }
-    img{
-        height: 40vh;
+
+    .news-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+        background: #4d5962;
     }
-    .css-1r6slb0{
-        width: calc(25%) !important;
-        flex: 1 1 calc(33.3333% - 1.5rem) !important;
+
+    .news-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 1.5;
+        margin-bottom: auto;
+        padding-bottom: 0.5em;
+        overflow-wrap: break-word;
+        flex-grow: 1;
     }
-    .css-1epmw04{
-        border:none !important;
+
+    .news-summary {
+        font-size: 0.95rem;
+        color: #C7C7C7;
+        line-height: 1.5;
+        margin-bottom: 10px;
     }
-    .st-bh{
-        border:none;
+
+    .pub-date {
+        font-size: 0.85rem;
+        color: #D1D1D1;
+        margin-top: auto;
+        padding-top: 0.5em;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
-    .st-dv{
-        color:black;
+
+    i {
+        color: #1E90FF;
+        font-size: 1.1rem;
+        vertical-align: middle;
     }
-    .st-da{
-        border:none;
+
+    /* Widgets */
+    .stSelectbox label, .stTextInput label {
+        font-weight: 500;
+        color: #FFFFFF !important;
     }
-    .st-do{
-        background-color:white;
-        color:black;
-        border-radius:20px;
+
+    .stButton>button {
+        background-color: #1E90FF;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 8px 18px;
+        font-size: 16px;
+        transition: all 0.2s ease;
+    }
+
+    .stButton>button:hover {
+        background-color: #0078FF;
+        transform: scale(1.03);
+    }
+
+    @media (max-width: 1000px) {
+        .news-card {
+            min-height: 180px;
+            max-height: 180px;
+            padding: 1.5em;
+        }
+        .news-title {
+            font-size: 1rem;
+        }
+    }
+
+    @media (max-width: 700px) {
+        .news-card {
+            min-height: 160px;
+            max-height: 160px;
+            padding: 1.2em;
+        }
+        .news-title {
+            font-size: 0.95rem;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
 
+
+# --- Fetch Functions ---
 def fetch_news_search_topic(topic, lang):
     try:
         site = f'https://news.google.com/rss/search?q={topic}&hl={lang}'
@@ -114,11 +144,11 @@ def fetch_news_search_topic(topic, lang):
         rd = op.read()
         op.close()
         sp_page = soup(rd, 'xml')
-        news_list = sp_page.find_all('item')
-        return news_list
+        return sp_page.find_all('item')
     except Exception as e:
         st.error(f"Error fetching news: {e}")
         return []
+
 
 def fetch_top_news(lang):
     try:
@@ -127,11 +157,11 @@ def fetch_top_news(lang):
         rd = op.read()
         op.close()
         sp_page = soup(rd, 'xml')
-        news_list = sp_page.find_all('item')
-        return news_list
+        return sp_page.find_all('item')
     except Exception as e:
         st.error(f"Error fetching top news: {e}")
         return []
+
 
 def fetch_category_news(topic, lang):
     try:
@@ -140,112 +170,87 @@ def fetch_category_news(topic, lang):
         rd = op.read()
         op.close()
         sp_page = soup(rd, 'xml')
-        news_list = sp_page.find_all('item')
-        return news_list
+        return sp_page.find_all('item')
     except Exception as e:
         st.error(f"Error fetching category news: {e}")
         return []
 
-def fetch_news_poster(poster_link):
-    try:
-        u = urlopen(poster_link)
-        raw_data = u.read()
-        image = Image.open(io.BytesIO(raw_data))
-        return image
-    except Exception:
-        return Image.open('./Meta/no_image.jpg')
 
-def display_news(list_of_news, news_quantity):
-    cols = st.columns(3)  # Create three columns for desktop view
-    c = 0
+# --- Display News ---
+def display_news(news_list, limit=18):
+    cols = st.columns(3)
+    count = 0
 
-    for news in list_of_news:
-        if c % 3 == 0 and c != 0:  # For every third news item, create new columns
+    for news in news_list:
+        if count % 3 == 0 and count != 0:
             cols = st.columns(3)
 
-        with cols[c % 3]:  # Display news in the respective column
-            st.markdown(f'**{news.title.text}**')
-            news_data = Article(news.link.text)
+        with cols[count % 3]:
             try:
-                news_data.download()
-                news_data.parse()
-                news_data.nlp()
+                article = Article(news.link.text)
+                article.download()
+                article.parse()
+                article.nlp()
+
+                card_html = f"""
+                <a href="{news.link.text}" target="_blank" class="news-card">
+                    <div class="news-title">{news.title.text}</div>
+                    <div class="pub-date"><i class="lucide-calendar"></i>{news.pubDate.text}</div>
+                </a>
+                """
+                st.markdown(card_html, unsafe_allow_html=True)
+
             except Exception as e:
-                st.error(f"Error processing article: {e}")
-                continue  # Skip to the next article if there’s an error
+                st.warning(f"Could not load article: {e}")
 
-            with st.expander("Read More"):
-                st.markdown(f"<h6 style='text-align: justify;'>{news_data.summary}</h6>", unsafe_allow_html=True)
-                st.markdown(f"[Read more at {news.source.text}]({news.link.text})")
-                st.success("Published Date: " + news.pubDate.text)
-
-        c += 1
-        if c >= news_quantity:
+        count += 1
+        if count >= limit:
             break
 
+
+# --- Main Application ---
 def run():
+    st.markdown("""
+        <h1 style='display:flex; flex-direction:column; font-size: 8em; align-items:center; gap:0.5rem;'>
+            <i class='lucide-earth'></i> Briefly<span><h5> The World in a Nutshell</h5></span>
+        </h1>
+    """, unsafe_allow_html=True)
 
-    st.title("BRIEFLY: THE WORLD IN A NUTSHELL")
-
-    # Updated Logo URL
-    logo_url = "https://drive.google.com/uc?id=1LhZ97smrzmOk9hvaluEv-vupnuK0RHlX"
-    logo_response = requests.get(logo_url)
-    logo_image = Image.open(BytesIO(logo_response.content))
-    st.image(logo_image, use_container_width=False)
-
-
-
-    # Language Selection
     lang_options = {
-        'English': 'en',
-        'हिंदी': 'hi',
-        'বাংলা': 'bn',
-        'ગુજરાતી': 'gu',
-        'ಕನ್ನಡ': 'kn',
-        'മലയാളം': 'ml',
-        'मराठी': 'mr',
-        'தமிழ்': 'ta',
-        'తెలుగు': 'te',
-        'उर्दू': 'ur'
+        'English': 'en', 'हिंदी': 'hi', 'বাংলা': 'bn', 'ગુજરાતી': 'gu',
+        'ಕನ್ನಡ': 'kn', 'മലയാളം': 'ml', 'मराठी': 'mr', 'தமிழ்': 'ta',
+        'తెలుగు': 'te', 'उर्दू': 'ur'
     }
     selected_lang = st.selectbox("Select Language", list(lang_options.keys()))
 
-    category = ['Trending🔥 News', 'Favourite💙 Topics', 'Search🔍 Topic']
-    cat_op = st.selectbox('Select your Category', category)
+    category = ['Top Stories', 'Explore by Category', 'Discover by Keyword']
+    choice = st.selectbox("Select Section", category)
 
-    if cat_op == category[0]:
-        st.subheader("✅ Here is the Trending🔥 news for you")
-        no_of_news = 21
-        news_list = fetch_top_news(lang_options[selected_lang])
-        display_news(news_list, no_of_news)
-    elif cat_op == category[1]:
-        av_topics = ['Choose Topic', 'WORLD', 'NATION', 'BUSINESS', 'TECHNOLOGY', 'ENTERTAINMENT', 'SPORTS', 'SCIENCE', 'HEALTH']
-        st.subheader("Choose your favourite Topic")
-        chosen_topic = st.selectbox("Choose your favourite Topic", av_topics)
-        if chosen_topic == av_topics[0]:
-            st.warning("Please Choose the Topic")
+    if choice == category[0]:
+        st.subheader("Top Stories", divider="gray")
+        display_news(fetch_top_news(lang_options[selected_lang]))
+
+    elif choice == category[1]:
+        topics = ['Choose Category', 'WORLD', 'NATION', 'BUSINESS', 'TECHNOLOGY',
+                  'ENTERTAINMENT', 'SPORTS', 'SCIENCE', 'HEALTH']
+        selected_topic = st.selectbox("Select a Category", topics)
+        if selected_topic != 'Choose Category':
+            st.subheader(f"{selected_topic.title()} News", divider="gray")
+            display_news(fetch_category_news(
+                selected_topic, lang_options[selected_lang]))
         else:
-            no_of_news = 21
-            news_list = fetch_category_news(chosen_topic, lang_options[selected_lang])
-            if news_list:
-                st.subheader("✅ Here are some {} News for you".format(chosen_topic))
-                display_news(news_list, no_of_news)
-            else:
-                st.error("No News found for {}".format(chosen_topic))
+            st.info("Please select a category above.")
 
-    elif cat_op == category[2]:
-        user_topic = st.text_input("Enter your Topic🔍")
-        no_of_news = 21
-
-        if st.button("Search") and user_topic != '':
-            user_topic_pr = user_topic.replace(' ', '')
-            news_list = fetch_news_search_topic(topic=user_topic_pr, lang=lang_options[selected_lang])
-            if news_list:
-                st.subheader("✅ Here are some News related to {} for you".format(user_topic.capitalize()))
-                display_news(news_list, no_of_news)
-            else:
-                st.error("No News found for {}".format(user_topic))
+    elif choice == category[2]:
+        user_topic = st.text_input("Enter a keyword to search")
+        if st.button("Search") and user_topic.strip():
+            topic_query = user_topic.replace(' ', '+')
+            st.subheader(
+                f"News related to '{user_topic.capitalize()}'", divider="gray")
+            display_news(fetch_news_search_topic(
+                topic_query, lang_options[selected_lang]))
         else:
-            st.warning("Please write Topic Name to Search🔍")
+            st.info("Type a keyword to search for news.")
+
 
 run()
