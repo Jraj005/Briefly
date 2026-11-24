@@ -1,8 +1,19 @@
 [theme]
+base = "dark"
 primaryColor = "#1E90FF"
 backgroundColor = "#0E1117"
-secondaryBackgroundColor = "#161A22"
+secondaryBackgroundColor = "#1A1F2B"
 textColor = "#FFFFFF"
 font = "sans serif"
-.news-title { display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
-.news-source { font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; color:#1E90FF; }
+
+[client]
+# Hides the "Deploy" button and developer menu items for a cleaner look
+toolbarMode = "minimal"
+showErrorDetails = false
+
+[server]
+headless = true
+runOnSave = true
+
+[browser]
+gatherUsageStats = false
