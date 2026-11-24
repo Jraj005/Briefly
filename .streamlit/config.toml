@@ -4,3 +4,5 @@ backgroundColor = "#0E1117"
 secondaryBackgroundColor = "#161A22"
 textColor = "#FFFFFF"
 font = "sans serif"
+.news-title { display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
+.news-source { font-size:.75rem; text-transform:uppercase; letter-spacing:.05em; color:#1E90FF; }
