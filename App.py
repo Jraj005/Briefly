@@ -2,7 +2,57 @@ import calendar, html, time
 from urllib.parse import quote_plus
 import feedparser
 import streamlit as st
-
+st.markdown("""
+<style>
+a.news-card, a.news-card:hover, a.news-card:visited {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+.news-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: .6rem;
+    background: #1A1F2B;
+    border: 1px solid #2A3142;
+    border-radius: 14px;
+    padding: 1.2rem 1.4rem;
+    margin: .5rem 0;
+    min-height: 170px;
+    transition: transform .2s ease, border-color .2s ease, box-shadow .3s ease;
+}
+.news-card:hover {
+    transform: translateY(-3px);
+    border-color: #1E90FF;
+    box-shadow: 0 8px 20px rgba(0,0,0,.5);
+}
+.news-source {
+    font-size: .72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #1E90FF;
+}
+.news-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: #FFFFFF;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.pub-date {
+    font-size: .8rem;
+    color: #9AA4B5;
+}
+@media (max-width: 700px) {
+    .news-card { min-height: 0; padding: 1rem 1.1rem; }
+    .news-title { font-size: 1rem; }
+}
+</style>
+""", unsafe_allow_html=True)
 LANGS = {
     'English': ('en-IN', 'IN', 'IN:en'), 'हिंदी': ('hi', 'IN', 'IN:hi'),
     'বাংলা': ('bn', 'IN', 'IN:bn'),      'ગુજરાતી': ('gu', 'IN', 'IN:gu'),
